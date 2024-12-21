@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "HhkjMiniAppTemplete",
+  "description": "鸿鹄科技小程序开发模板",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

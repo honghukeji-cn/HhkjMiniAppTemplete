@@ -1,0 +1,7 @@
+//所有界面使用flex布局
+page,body{
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  display: flex;
+}
