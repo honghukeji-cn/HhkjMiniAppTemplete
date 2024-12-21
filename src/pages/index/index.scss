@@ -1,0 +1,16 @@
+.actionView{
+  position: absolute;
+  bottom: 120px;
+  left: 0px;
+  right: 0px;
+  height: 50px;
+  background: orange;
+  z-index: 1000;
+}
+.loadingView{
+  height: 30px;
+  background: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

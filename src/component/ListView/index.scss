@@ -1,0 +1,13 @@
+.listViewItem>.nut-grid-item-content{
+  padding: 0;
+  background: orange;
+}
+.listViewItem>.nut-grid-item-content> view{
+  width: 100%;
+}
+.footView{
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
