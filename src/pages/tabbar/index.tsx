@@ -10,6 +10,7 @@ import CatePage from "./CatePage";
 import FindPage from "./FindPage";
 import CarPage from "./CarPage";
 import MyPage from "./MyPage";
+import MainView from "../../component/MainView";
 const Index = (_props:any,ref:any) => {
   console.log(_props,"_props")
   const [index,setIndex]=useState<number>(0)
@@ -27,7 +28,7 @@ const Index = (_props:any,ref:any) => {
   });
 
   return (
-    <View style={{flex:1,background:"red",display:"flex",flexDirection:"column",overflowY:"hidden"}}>
+    <MainView >
       <View style={{flex:1,background:"orange",display:'flex',overflowY:"scroll"}}>
         {renderPage()}
       </View>
@@ -45,7 +46,7 @@ const Index = (_props:any,ref:any) => {
         <Tabbar.Item title="购物车" icon={<Cart size={18} />} />
         <Tabbar.Item title="我的" icon={<User size={18} />} />
       </Tabbar>
-    </View>
+    </MainView>
   )
 }
 export default Index

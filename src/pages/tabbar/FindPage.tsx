@@ -3,9 +3,9 @@ import {View} from "@tarojs/components";
 
 const FindPage=(_props:any, ref:any)=>{
   return(
-    <View style={{flex:1,background:"red"}}>
+    <div style={{flex:1,background:"red"}}>
 
-    </View>
+    </div>
   );
 }
 export default forwardRef(FindPage);

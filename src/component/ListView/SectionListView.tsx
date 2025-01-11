@@ -3,12 +3,16 @@ import {Image, ScrollView, View} from "@tarojs/components";
 import { Empty, Grid} from "@nutui/nutui-react-taro";
 import "./index.scss"
 import {SectionListProps} from "../../props/SectionListDataProps";
+import Taro from "@tarojs/taro";
 const ListView=(_props:SectionListProps,ref:any)=>{
   const {gap=5,columns=1}=_props;
   const [list,setList]=useState<any[]>([]);
   const [refreshing,setRefreshing]=useState<boolean>(false);//是否正在刷新中
   const [sid,setSid]=useState<string | null>(null);//滚动到哪个地方
+  const [width,setWidth]=useState<number>(0)
   useEffect(()=>{
+    setWidth(Taro.getSystemInfoSync().windowWidth)
+    console.log(Taro.getSystemInfoSync().windowWidth,"getSystemInfoSync")
     onRefresh();
   },[])
   const onRefresh=()=>{
@@ -77,14 +81,19 @@ const ListView=(_props:SectionListProps,ref:any)=>{
         return(
           <>
             <View  id={"section"+index}>{_props.renderSection(section,index)}</View>
+            {section.children.length==0 &&
+              <Empty style={{width:width-gap*2,marginLeft:gap,marginRight:gap}} image={<Image src={require("../../imgs/NO_DATA.png")} /> } />
+            }
+            {section.children.length>0 &&
             <Grid gap={gap} columns={columns} direction={"horizontal"} style={{flex:1}}>
-              {section.children.length==0 && <Empty style={{width:"100%"}} image={<Image src={require("../../imgs/NO_DATA.png")} /> } />}
+
               {section.children.map((item,key)=>(
                 <Grid.Item  id={"section"+index+"item"+key} className={"listViewItem"} >
                   {_props.renderItem(item,key)}
                 </Grid.Item>
               ))}
             </Grid>
+            }
           </>
         );
       })}
