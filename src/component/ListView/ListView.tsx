@@ -4,8 +4,10 @@ import {ConfigProvider, Empty, Grid, InfiniteLoading, Loading} from "@nutui/nutu
 import "./index.scss"
 import ListViewProps from "../../props/ListViewProps";
 import HttpResponseProps from "../../props/HttpResponseProps";
+import CustomerEmpty from "../CustomerEmpty";
 const ListView=(_props:ListViewProps,ref:any)=>{
-  const {gap=5,columns=1,size=10}=_props;
+  const {gap=5,columns=1,size=10,autoLoad=false}=_props;
+
   const [list,setList]=useState<any[]>([]);
    const [page,setPage]=useState<number>(1);
   const [hasMore,setHasMore]=useState<boolean>(true);
@@ -13,7 +15,7 @@ const ListView=(_props:ListViewProps,ref:any)=>{
   const[loading,setLoading]=useState<boolean>(false);//是否正在刷新中
   const [sid,setSid]=useState<string | null>(null);//滚动到哪个地方
   useEffect(()=>{
-    onRefresh();
+    if(autoLoad) onRefresh();
   },[])
   const onRefresh=()=>{
     loadData(1)
@@ -38,10 +40,10 @@ const ListView=(_props:ListViewProps,ref:any)=>{
       }
       if(res.code==1)
       {
-        let datas=loadPage==1?res.data.datas:list.concat(res.data.datas);
-        setList(datas);
+        let datas=loadPage==1?res.data.datas:list.concat(res.data.datas || []);
+        setList(datas || []);
         setPage(loadPage+1);
-        setHasMore(datas.length<res.data.all)
+        setHasMore(datas?.length<res.data.all)
       }else{
         setHasMore(false);
       }
@@ -87,13 +89,16 @@ const ListView=(_props:ListViewProps,ref:any)=>{
         refresherTriggered={refreshing}
         onRefresherRefresh={onRefresh}
         onScrollToLower={loadMore}
+        refresherBackground={"rgba(0,0,0,0)"}
         {..._props}
       >
         {_props.renderHeader&&_props.renderHeader()}
         {list.length==0 &&
-        <Empty image={<Image src={require("../../imgs/NO_DATA.png")} /> } />
+          <>
+            {_props.renderEmpty?_props.renderEmpty(): <CustomerEmpty /> }
+          </>
         }
-        <Grid gap={gap} columns={columns} direction={"horizontal"} style={{flex:1}}>
+        <Grid gap={gap} columns={columns} className={"chatContainer"} direction={"horizontal"} style={{flex:1}}>
           {list.map((item,key)=>(
             <Grid.Item key={key} id={"item"+key} className={"listViewItem"} >
               {_props.renderItem(item,key)}
@@ -102,7 +107,7 @@ const ListView=(_props:ListViewProps,ref:any)=>{
         </Grid>
         <view className={"footView"}>
           {loading && renderLoading()}
-          {!hasMore && renderNoMore()}
+          {!hasMore && list.length>0 && renderNoMore()}
         </view>
       </ScrollView>
   )

@@ -4,6 +4,7 @@ import { Empty, Grid} from "@nutui/nutui-react-taro";
 import "./index.scss"
 import {SectionListProps} from "../../props/SectionListDataProps";
 import Taro from "@tarojs/taro";
+import CustomerEmpty from "../CustomerEmpty";
 const ListView=(_props:SectionListProps,ref:any)=>{
   const {gap=5,columns=1}=_props;
   const [list,setList]=useState<any[]>([]);
@@ -12,14 +13,16 @@ const ListView=(_props:SectionListProps,ref:any)=>{
   const [width,setWidth]=useState<number>(0)
   useEffect(()=>{
     setWidth(Taro.getSystemInfoSync().windowWidth)
-    console.log(Taro.getSystemInfoSync().windowWidth,"getSystemInfoSync")
-    onRefresh();
+    // onRefresh();
   },[])
   const onRefresh=()=>{
     setRefreshing(true);
     _props.getData((datas)=>{
-      setRefreshing(false);
-      setList(datas);
+      //必须有延迟才会收起
+      setTimeout(()=>{
+        setRefreshing(false);
+        setList(datas);
+      },100)
 
     })
   }
@@ -75,14 +78,15 @@ const ListView=(_props:SectionListProps,ref:any)=>{
     >
       {_props.renderHeader?_props.renderHeader():null}
       {list.length==0 &&
-      <Empty image={<Image src={require("../../imgs/NO_DATA.png")} /> } />
+      <CustomerEmpty   />
       }
       {list.map((section,index)=>{
         return(
           <>
             <View  id={"section"+index}>{_props.renderSection(section,index)}</View>
             {section.children.length==0 &&
-              <Empty style={{width:width-gap*2,marginLeft:gap,marginRight:gap}} image={<Image src={require("../../imgs/NO_DATA.png")} /> } />
+              <CustomerEmpty style={{marginLeft:gap,marginRight:gap}} />
+              // <Empty style={{width:width-gap*2,marginLeft:gap,marginRight:gap}} image={<Image src={require("../../imgs/NO_DATA.png")} /> } />
             }
             {section.children.length>0 &&
             <Grid gap={gap} columns={columns} direction={"horizontal"} style={{flex:1}}>

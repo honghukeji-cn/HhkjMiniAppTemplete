@@ -1,13 +1,26 @@
+.listViewItem{
+  width: 100%;
+}
 .listViewItem>.nut-grid-item-content{
   padding: 0;
-  background: orange;
 }
 .listViewItem>.nut-grid-item-content> view{
   width: 100%;
+}
+.chatContainer{
+  background: none;
+  border: none !important;
+  .nut-grid-item-content-border{
+    border: none !important;
+  }
+  .nut-grid-item-content-center{
+    background: none;
+  }
 }
 .footView{
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
 }
